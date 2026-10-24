@@ -1,0 +1,6 @@
+#!/usr/bin/env python3
+"""nlc -- Natural Language Compiler. Thin wrapper for running without install."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from hulang.cli import main
+sys.exit(main())

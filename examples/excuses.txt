@@ -1,0 +1,16 @@
+Write a program that generates random excuses for why the build is broken.
+Each time you run it, it should print a different excuse. Make them sound
+plausible but increasingly absurd. Mix technical-sounding jargon with
+obviously ridiculous causes. Print the excuse in a format like:
+
+  BUILD FAILURE REPORT
+  --------------------
+  Root cause: [the excuse]
+  Confidence: [a random percentage]
+  Recommended fix: [an equally absurd fix]
+
+Have at least 30 different excuses built in. Some example vibes (don't
+use these exactly):
+- "A cosmic ray flipped a bit in the CI server's RAM"
+- "The intern's cat walked across the deploy keyboard"
+- "DNS propagation achieved sentience and refused"

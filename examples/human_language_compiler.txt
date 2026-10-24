@@ -1,0 +1,13 @@
+Create a human language compiler called human.
+
+Accept a program written in ordinary human language as the first argument,
+and an output filename after -o. Ask GitHub Copilot CLI to translate the
+program into a complete C source file, then compile it with gcc.
+
+Use copilot -p with model gpt-5.6-luna, --reasoning-effort low, and permission
+to write the source file. Pass arguments directly, not through a shell. Save the generated C
+beside the output binary. Show short progress messages, and show diagnostics
+and exit unsuccessfully if either compilation stage fails.
+Capture Copilot's output and show it only if generation fails.
+
+Compile whatever program the user describes. Do not invoke HuLang or nlc.

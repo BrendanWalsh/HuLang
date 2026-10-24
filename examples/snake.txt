@@ -1,0 +1,5 @@
+Write a program that plays Snake in the terminal. Use arrow keys to
+control the snake. The snake grows when it eats food (shown as @).
+Show the score at the top. The game ends when the snake hits a wall
+or itself. Make the playing field 40 wide and 20 tall. Start with
+the snake moving to the right. Speed up slightly as the score increases.

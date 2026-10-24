@@ -1,0 +1,48 @@
+{
+  "status": "replicated",
+  "original_run_id": "initial-20260815",
+  "replication_run_id": "replicator-20260815",
+  "command": "RUN_ID=replicator-20260815 ./reproduce.sh",
+  "implementation_sha256": "abc132bfa89e455edfa5eea704f78b9a41111793b6af71e62dab33f1a81286f5",
+  "original": {
+    "results_sha256": "8892d8547753171ca4e0b2f55ff1197b3d8f7af798c67c73be64cc1b93e52b5a",
+    "metadata_sha256": "556c06a1ff7f32f1209e17dec2a16fa57443501f615b683b8c9b7e2ecd4626d8",
+    "failures_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca4959911b7852b855",
+    "rows": 265,
+    "failure_rows": 0
+  },
+  "replication": {
+    "results_sha256": "269edca0ce4dbfe2bbf182ab595e3330dae8aced1e0526f40c14b0ae83c19eca",
+    "metadata_sha256": "15cc8314251c37b8f1ced4291307690907028403518b3e4c2533719ae20fd2b6",
+    "failures_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca4959911b7852b855",
+    "rows": 265,
+    "failure_rows": 0
+  },
+  "comparison": {
+    "semantic_result_rows_equal": true,
+    "row_order_and_scene_keys_equal": true,
+    "maximum_unique_pair_count_delta": 0,
+    "all_true_overlap_counts_equal": true,
+    "original_candidate_coverage_complete": true,
+    "replication_candidate_coverage_complete": true,
+    "scene_count": 24,
+    "scenes_with_two_tier_below_fixed_oracle": 0,
+    "scenes_with_two_tier_equal_fixed_oracle": 0,
+    "scenes_with_two_tier_above_fixed_oracle": 24,
+    "paired_difference_min": 4,
+    "paired_difference_max": 1413,
+    "paired_difference_median_by_condition_layout": {
+      "mono/uniform": 6,
+      "mono/clustered": 50,
+      "loglow/uniform": 10,
+      "loglow/clustered": 104,
+      "bimodal/uniform": 161,
+      "bimodal/clustered": 1380,
+      "pareto/uniform": 47,
+      "pareto/clustered": 513
+    },
+    "permutation_fixture_two_tier_count_original": 1861,
+    "permutation_fixture_two_tier_count_replication": 1861
+  },
+  "interpretation": "[NEGATIVE RESULT] The clean rerun exactly reproduced all count-bearing result fields and the bounded conclusion: under this declared n=320 cube-scene protocol, the median/90th-percentile two-tier policy emitted more unique candidate pairs than the best predeclared single-tier grid in all 24 scenes. This does not establish a general result outside the tested policy and regime."
+}

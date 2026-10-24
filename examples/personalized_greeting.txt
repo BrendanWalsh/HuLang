@@ -1,0 +1,3 @@
+Read user input from stdin and use it as a name. If the user just hits
+enter without typing anything, use "World" as the default. Print
+"Hello, <name>!" along with the current date and time.

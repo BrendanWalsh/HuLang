@@ -1,0 +1,18 @@
+CALL 1 planner START
+CALL 1 planner EXIT 0
+CALL 2 literature-mapper START
+CALL 2 literature-mapper EXIT 0
+CALL 3 hypothesis-generator START
+CALL 3 hypothesis-generator EXIT 0
+CALL 4 experimenter START
+CALL 4 experimenter EXIT 0
+CALL 5 skeptical-critic START
+CALL 5 skeptical-critic EXIT 0
+CALL 6 novelty-auditor START
+CALL 6 novelty-auditor EXIT 0
+CALL 7 replicator START
+CALL 7 replicator EXIT 0
+CALL 8 paper-writer START
+CALL 8 paper-writer EXIT 0
+CALL 9 final-verifier START
+CALL 9 final-verifier EXIT 0

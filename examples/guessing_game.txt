@@ -1,0 +1,5 @@
+Create a number guessing game. The program picks a random number between 1
+and 100, then lets the user guess. After each guess, tell them if they're
+too high or too low. Count the guesses and when they get it right, tell
+them how many tries it took. Ask if they want to play again after each round.
+Keep a running scoreboard showing rounds played and average guesses per round.

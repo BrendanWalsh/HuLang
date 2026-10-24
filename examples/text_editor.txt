@@ -1,0 +1,15 @@
+Create a terminal-based text editor. It should:
+
+- Open a file given as a command-line argument, or start with an empty buffer
+- Display the file contents with line numbers on the left
+- Show a status bar at the bottom with the filename, cursor position, and
+  whether the file has been modified
+- Support arrow keys for cursor movement
+- Support typing to insert characters at the cursor position
+- Support backspace and delete
+- Ctrl+S to save
+- Ctrl+Q to quit (warn if unsaved changes)
+- Page Up / Page Down for scrolling
+- Handle terminal resize
+
+Use raw terminal mode with termios. Don't use ncurses.

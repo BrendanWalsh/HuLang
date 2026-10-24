@@ -1,0 +1,3 @@
+Be a Magic 8-Ball, but every answer must be phrased like a passive-aggressive
+corporate email. Read a question from stdin, sleep for one second to look
+thoughtful, then print one of at least 12 different replies at random.

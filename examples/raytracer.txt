@@ -1,0 +1,11 @@
+Build a ray tracer that renders a 3D scene and saves it as a BMP image
+file called "render.bmp" (or a filename given as argument). The scene
+should have:
+
+- A large gray floor
+- Three spheres sitting on it: one red, one green, one blue
+- A light source above and to the left casting shadows
+- Soft ambient lighting so shadows aren't pure black
+
+Make the image 800x600 pixels. Use anti-aliasing so edges look smooth.
+Print rendering progress to stderr so I know it's working and output the name of the file.

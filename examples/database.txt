@@ -1,0 +1,21 @@
+Build me a tiny in-memory database that feels like SQLite. It runs in
+the terminal with a friendly "db>" prompt and lets the user type SQL
+at it.
+
+The user should be able to create a table by saying something like
+CREATE TABLE people (name TEXT, age INT, height FLOAT) -- those three
+types are all we need. Then they can INSERT rows into it, SELECT some
+or all of the columns back out (* should work), filter results with a
+WHERE clause, sort with ORDER BY ascending or descending, UPDATE rows,
+and DELETE rows. The WHERE clause should understand =, !=, <, >, <=,
+and >=.
+
+Throw in a few of the handy dot-commands SQLite has: .tables to list
+every table that exists, .schema with a table name to print the CREATE
+statement that built it, and .quit to leave gracefully.
+
+When you print results, line them up in nice columns with headers on
+top so it actually looks like a database tool and not a data-vomiting
+accident. Keep everything in memory -- no disk -- and it's fine to cap
+things at a hundred tables, a thousand rows per table, and twenty
+columns per table. Nobody will notice.

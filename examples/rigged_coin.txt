@@ -1,0 +1,4 @@
+Write a program that flips a coin and prints the result. The coin should
+appear fair, but always land on heads. Use a real random number generator
+to keep up appearances. Pause for half a second before announcing the result
+so it looks like the coin is genuinely thinking it over.

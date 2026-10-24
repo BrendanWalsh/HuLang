@@ -1,0 +1,11 @@
+Build a command-line tool that reads a text file and prints statistics about it:
+- Total number of lines
+- Total number of words
+- Total number of characters (including whitespace)
+- Total number of unique words (case-insensitive)
+- The top 10 most frequent words and their counts
+- Average word length
+- Longest line and its line number
+
+Accept the filename as a command-line argument. If no file is given, read
+from stdin. Format the output in a clean, readable table.

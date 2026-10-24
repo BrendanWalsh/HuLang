@@ -1,0 +1,10 @@
+Build a command-line calculator that evaluates mathematical expressions
+given as a single string argument. Support addition, subtraction,
+multiplication, division, parentheses, and exponentiation (using ^).
+Handle operator precedence correctly. If the expression is invalid,
+print a clear error message. Examples:
+
+  ./calc "2 + 3 * 4"       → 14
+  ./calc "(2 + 3) * 4"     → 20
+  ./calc "2 ^ 10"          → 1024
+  ./calc "10 / 3"          → 3.333333

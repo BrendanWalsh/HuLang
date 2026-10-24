@@ -1,0 +1,86 @@
+Build a native command-line auto-researcher that uses GitHub Copilot CLI as its
+runtime agentic engine. Given a research prompt, it must perform real literature
+and web research, generate and test hypotheses, run reproducible local
+experiments, challenge its own conclusions, track citations, and write a complete
+research paper.
+
+The binary is an orchestrator, not a language model. Invoke the `copilot` command
+with fork/exec and argument arrays, never shell-concatenated commands. Detect a
+missing or unauthenticated Copilot CLI immediately and fail with a clear message.
+Keep every run inside a newly created workspace directory supplied by the user.
+
+Commands:
+
+  ./researcher run "RESEARCH PROMPT" --workspace DIR
+      [--model MODEL] [--budget CALLS] [--max-minutes N]
+  ./researcher resume --workspace DIR [--budget CALLS]
+  ./researcher status --workspace DIR
+  ./researcher verify --workspace DIR
+
+Use `auto` as the default model. The budget is a hard maximum number of Copilot
+calls. Preserve enough state in ordinary Markdown, JSONL, CSV, shell scripts, and
+BibTeX that a run can resume, but make no private binary format or compatibility
+promise across generated program versions.
+
+Coordinate these explicit research phases:
+
+1. Planner: decompose the prompt into answerable questions, novelty criteria,
+   source-quality rules, and falsifiable hypotheses.
+2. Literature mapper: search primary sources first, collect prior art, and build
+   a citation/claim graph.
+3. Hypothesis generator: propose mechanisms or algorithms that differ from the
+   located prior art and predict measurable outcomes.
+4. Experimenter: write and run bounded scripts/programs inside the workspace,
+   record exact commands, environment, seeds, raw output, and hashes.
+5. Skeptical critic: look for confounds, unsupported claims, citation mismatch,
+   failed controls, and alternative explanations.
+6. Novelty auditor: perform targeted prior-art searches for every surviving
+   candidate discovery and downgrade anything already known.
+7. Replicator: rerun the strongest experiments from clean commands and compare
+   hashes/tolerances.
+8. Paper writer: synthesize only claims supported by the evidence ledger.
+
+Each phase gets a strict prompt naming the files it may read and must produce.
+Run independent proposer and critic passes where the budget permits. A failed
+phase must be visible and must not be replaced with invented success.
+
+Required workspace outputs:
+
+  plan.md
+  sources.jsonl
+  evidence.jsonl
+  hypotheses.jsonl
+  lab-notebook.md
+  experiments/
+  reproduce.sh
+  references.bib
+  paper.md
+  verification.json
+  run.log
+
+For every source, record a stable citation ID, URL, title, authors if available,
+publication/access date, source type, direct supporting quotation, retrieval
+status, and content hash. Every factual claim in paper.md must carry one or more
+of those citation IDs. Distinguish primary evidence, secondary discussion, and
+model inference.
+
+Use libcurl to verify cited HTTP(S) URLs and record status codes. The verifier
+must reject unknown citation IDs, uncited factual paragraphs, unreachable
+sources unless explicitly marked unavailable, missing experiment commands,
+changed raw-output hashes, failed replication, or a claimed discovery without a
+completed novelty audit.
+
+The paper must contain: title, abstract, research question, related work,
+methods, experiments, results, candidate novel findings, threats to validity,
+limitations, conclusion, and references. Never state that a finding is genuinely
+novel unless the novelty audit found no matching prior work and at least one
+replicated experiment supports it; otherwise call it a candidate or negative
+result.
+
+Implement status output showing phase completion, calls used/remaining, source
+count, hypothesis count, experiment count, verification failures, and paths to
+the current paper and notebook.
+
+Use bounded files and process timeouts, sanitize workspace paths, refuse to run
+outside the workspace, capture child stdout/stderr, propagate nonzero exits, and
+clean up child processes on SIGINT/SIGTERM.

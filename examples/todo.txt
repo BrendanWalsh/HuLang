@@ -1,0 +1,12 @@
+Create a simple command-line todo list manager that stores todos in a file
+called "todos.dat" in the current directory. Support these commands:
+
+  ./todo add "Buy groceries"     → adds a new todo
+  ./todo list                    → shows all todos with numbers
+  ./todo done 3                  → marks todo #3 as complete
+  ./todo remove 3               → removes todo #3
+  ./todo clear                   → removes all completed todos
+
+Show incomplete todos with [ ] and completed ones with [x].
+Number each todo starting from 1. Persist everything to the file
+so todos survive between runs.

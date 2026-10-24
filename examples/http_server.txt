@@ -1,0 +1,8 @@
+Build a small HTTP server that listens on port 8080. When a browser
+connects, serve a single HTML page that says "Hello from HuLang!" with
+a dark background, centered white text, and the current server time. It should print out the localhost URL with the port it's listening on.
+
+Handle multiple connections concurrently using fork(). Log each request
+to stderr with the client IP and requested path. Handle SIGCHLD to
+avoid zombie processes. Respond with proper HTTP/1.1 headers including
+Content-Type and Content-Length.

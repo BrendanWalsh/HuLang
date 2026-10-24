@@ -1,0 +1,38 @@
+{
+  "name": "HuLang",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    }
+  },
+  "postCreateCommand": "python -m pip install -e '.[dev]' && npm install --global @github/copilot",
+  "postStartCommand": "gcc --version >/dev/null && python --version && echo 'Ready: run make test or nlc run examples/fibonacci.txt'",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "charliermarsh.ruff"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.testing.pytestEnabled": true,
+        "python.testing.pytestArgs": [
+          "tests"
+        ],
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    },
+    "codespaces": {
+      "openFiles": [
+        "README.md",
+        "examples/hello.txt"
+      ]
+    }
+  },
+  "remoteUser": "vscode"
+}

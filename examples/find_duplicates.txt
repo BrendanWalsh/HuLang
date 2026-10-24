@@ -1,0 +1,11 @@
+Create a program that takes a directory path as an argument and recursively
+finds all duplicate files based on their content (not name). Use MD5 hashing
+to compare files. Group the duplicates together and show:
+- The hash
+- Total wasted space per group
+- All file paths in the group
+
+At the end, show a summary with total duplicate groups found, total wasted
+space, and total files that could be removed. Sort groups by wasted space
+(largest first). Skip files smaller than 1 byte. If no directory is given,
+use the current directory.

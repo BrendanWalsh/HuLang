@@ -1,0 +1,12 @@
+Generate and display a random maze in the terminal using ASCII art.
+Accept width and height as command-line arguments (default to 20x10).
+Use a recursive backtracking algorithm. Display the maze using these
+characters:
+
+  ██ for walls
+  (space) for paths
+  S for the start (top-left)
+  E for the exit (bottom-right)
+
+After showing the maze, solve it and display the solution path using
+dots (·) to mark the route from S to E.

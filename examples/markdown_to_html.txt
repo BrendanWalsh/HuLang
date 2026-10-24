@@ -1,0 +1,16 @@
+Implement a Markdown to HTML converter. Read a Markdown file (or stdin)
+and output valid HTML5 to stdout. Support:
+
+- Headings (# through ######)
+- Paragraphs (blank line separated)
+- Bold (**text**) and italic (*text*)
+- Inline code (`code`) and code blocks (``` fenced)
+- Unordered lists (- items, nested with indentation)
+- Ordered lists (1. items)
+- Links [text](url) and images ![alt](url)
+- Horizontal rules (---)
+- Blockquotes (> text)
+
+Wrap output in a complete HTML document with a <style> block that makes
+it look clean -- dark background (#1a1a2e), light text, styled code blocks,
+reasonable max-width and margins. Make it look like a modern docs page.

@@ -1,0 +1,19 @@
+Make me a tiny linter for C code. The user gives you a .c file as an
+argument and you tell them what's wrong with it.
+
+Look for the usual smells: functions that have grown too long (more than
+fifty lines is a fair cutoff), lines that scroll off the side of the
+screen (let's say anything past 120 characters), single-line if/while/for
+bodies that aren't wrapped in braces (a known foot-gun), and obvious
+buffer overflow bait like gets, strcpy, and sprintf. When you see one
+of those, gently suggest the safer cousin: fgets, strncpy, snprintf.
+
+Also flag the things humans leave behind: TODO and FIXME comments, any
+integer literal bigger than one that isn't part of a #define or an enum
+(the dreaded magic number), and code that's nested so deeply it's drifted
+past four levels of indentation.
+
+Print each warning the way a real compiler would -- filename:line:col
+followed by a short message -- sorted by line number so the user can read
+top to bottom. End with a little summary tally of how many of each
+category you found, so they know where to start cleaning up.

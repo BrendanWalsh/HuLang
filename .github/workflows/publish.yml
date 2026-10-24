@@ -1,0 +1,73 @@
+# Publish to PyPI -- MANUAL TRIGGER ONLY
+#
+# This workflow NEVER runs automatically. You must:
+# 1. Go to Actions → "Publish to PyPI" → "Run workflow"
+# 2. Type the version number to confirm (must match pyproject.toml)
+# 3. The "pypi" environment requires manual approval in repo settings
+#
+# To set up the approval gate:
+# 1. Go to repo Settings → Environments → New environment → "pypi"
+# 2. Check "Required reviewers" and add yourself
+# 3. Add a PyPI API token as secret PYPI_API_TOKEN
+
+name: Publish to PyPI
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to publish (must match pyproject.toml, e.g. 0.1.0)"
+        required: true
+        type: string
+      confirm:
+        description: "Type PUBLISH to confirm"
+        required: true
+        type: string
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify confirmation
+        run: |
+          if [ "${{ inputs.confirm }}" != "PUBLISH" ]; then
+            echo "❌ You must type PUBLISH to confirm. Got: '${{ inputs.confirm }}'"
+            exit 1
+          fi
+      - name: Verify version matches pyproject.toml
+        run: |
+          TOML_VERSION=$(python3 -c "
+          import tomllib
+          with open('pyproject.toml', 'rb') as f:
+              print(tomllib.load(f)['project']['version'])
+          ")
+          if [ "$TOML_VERSION" != "${{ inputs.version }}" ]; then
+            echo "❌ Version mismatch: input='${{ inputs.version }}' pyproject.toml='$TOML_VERSION'"
+            exit 1
+          fi
+          echo "✅ Version $TOML_VERSION confirmed"
+
+  publish:
+    needs: guard
+    runs-on: ubuntu-latest
+    environment: pypi  # Requires manual approval in repo settings
+    permissions:
+      id-token: write  # For trusted publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install build tools
+        run: pip install build
+      - name: Build package
+        run: python -m build
+      - name: Verify package
+        run: |
+          pip install dist/*.whl
+          nlc version
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}

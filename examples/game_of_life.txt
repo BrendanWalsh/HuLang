@@ -1,0 +1,13 @@
+Implement Conway's Game of Life in the terminal. Start with a random
+grid of cells (alive or dead). Accept width, height, and number of
+generations as command-line arguments (defaults: 60x30, 100 generations).
+
+Display each generation by clearing the screen and redrawing. Use █ for
+alive cells and space for dead cells. Show the generation number and
+population count at the top. Add a small delay between frames (50ms)
+to create an animation effect.
+
+Rules:
+- Any live cell with 2 or 3 neighbors survives
+- Any dead cell with exactly 3 neighbors becomes alive
+- All other cells die or stay dead

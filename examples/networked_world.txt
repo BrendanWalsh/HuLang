@@ -1,0 +1,82 @@
+Build one self-contained native program that can run as an authoritative server,
+a graphical client, or a headless bot for a small networked procedural 3D world.
+Use SDL2, desktop OpenGL, POSIX sockets, and pthreads. Include <SDL2/SDL.h> and
+<GL/gl.h>. Do not require external assets, a database, or persistent world files.
+
+The world is regenerated from a numeric seed on every run. Generate chunked voxel
+terrain with hills, caves, colored materials, and a few deterministic moving AI
+agents. The protocol only needs to connect processes running this same binary
+version.
+
+Server mode:
+
+  ./world --server --port PORT --seed SEED [--tick-rate HZ]
+          [--latency-ms N] [--loss-percent N] [--duration SEC]
+
+The server owns all player and AI state. Use a fixed simulation tick, nonblocking
+sockets, sequence numbers, bounded packet sizes, and explicit packet types.
+Accept client joins/leaves, validate all input, stream nearby chunk data, apply
+movement, update AI agents, and broadcast timestamped snapshots. Simulated latency
+and packet loss must be deterministic from the world seed. Log joins, leaves,
+snapshot counts, dropped packets, and a final authoritative world hash.
+
+Graphical client mode:
+
+  ./world --client HOST:PORT --name NAME
+
+Open a 1280x720 SDL2 OpenGL window. Render visible voxel chunks, players, and AI
+agents with a free first-person camera and an embedded bitmap HUD. Use WASD and
+mouse input. Implement client-side prediction for the local player, interpolation
+for remote entities, reconciliation against authoritative snapshots, chunk
+request/caching, and visible network statistics: ping, sequence, prediction error,
+snapshot rate, loaded chunks, and simulated loss.
+
+Headless bot mode:
+
+  ./world --bot HOST:PORT --name NAME --script circle|wander|line
+          [--duration SEC]
+
+Bots must connect through the real network protocol, send deterministic movement
+input, consume snapshots/chunks, and print their final player position, last
+authoritative tick, received snapshot count, and world hash.
+
+Provide two deterministic proof modes:
+
+  ./world --render-snapshot SEED FILE.bmp
+  ./world --protocol-self-test
+
+Render-snapshot creates a hidden OpenGL window, renders a seeded world with three
+players and several AI agents, saves a 1280x720 BMP using glReadPixels, prints the
+filename, and exits. Use an elevated three-quarter camera so terrain depth,
+players, and agents are all obvious in the image rather than collapsing into a
+thin horizon.
+
+The snapshot is a presentation artifact, not a debug view. Fill most of the
+frame with a detailed voxel island containing obvious height variation and
+distinct grass, dirt, stone, sand, and translucent water materials. Add
+deterministic trees, a small tower or bridge, shadows or directional lighting,
+distance fog, and a sky gradient. Draw at least three large, brightly colored
+player avatars and several contrasting AI agents above the terrain.
+
+Overlay a self-contained bitmap HUD showing:
+
+- WORLD SEED and authoritative tick
+- loaded/visible chunk count
+- SERVER plus three connected client names
+- latency, packet loss, snapshot rate, and prediction error
+- a shortened world hash
+- a small legend for players, agents, and chunk boundaries
+
+Use only immediate-mode GL/gl.h and an embedded bitmap font. Ensure the BMP is
+upright when converting from OpenGL's bottom-left pixel origin. The screenshot
+must remain readable when displayed 720 pixels wide in the README.
+
+Protocol-self-test runs an in-process server transport and three simulated clients
+through join, movement, chunk requests, delayed/reordered packets, disconnect, and
+reconnect. It must fail nonzero on malformed-packet acceptance, state divergence,
+or hash mismatch, and otherwise print deterministic counters plus:
+
+  protocol_self_test=pass
+
+Handle SIGINT/SIGTERM cleanly. Do not use system(). Check allocations and socket
+errors, cap queues and entity/chunk counts, free resources, and print clear usage.

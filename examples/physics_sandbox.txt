@@ -1,0 +1,71 @@
+Build a self-contained native 3D physics sandbox using SDL2 and desktop OpenGL.
+Include <SDL2/SDL.h> and <GL/gl.h>. Do not load models, textures, shaders, fonts,
+or configuration files at runtime.
+
+Use a fixed 1/120-second simulation step with interpolation for rendering.
+Represent dynamic spheres and boxes with position, velocity, orientation,
+angular velocity, inverse mass, restitution, friction, and sleep state.
+
+Implement:
+
+- gravity and semi-implicit Euler integration
+- deterministic seeded scene generation
+- a spatial-hash broad phase rather than testing every body pair
+- sphere/sphere, sphere/box, and box/box contact generation
+- iterative impulse resolution with restitution, friction, and positional
+  correction
+- static ground and procedurally generated terrain blocks
+- distance constraints that can form pendulums and chains
+- sleeping/waking bodies
+- particle bursts when high-energy impacts occur
+- bounded arrays with clear errors instead of silent overflow
+
+The default command opens a 1280x720 SDL2 OpenGL window. Render a lit 3D scene
+with depth testing, a grid/terrain floor, shadows or projected contact markers,
+and colored rigid bodies. Use only immediate-mode OpenGL or other functionality
+available from GL/gl.h; do not require an extension loader.
+
+Provide a free orbit/fly camera controlled by mouse and WASD. Show an embedded
+bitmap-text HUD with body count, active/sleeping count, contact count, broad-
+phase candidate count, simulation time, frame time, and controls.
+
+Controls:
+
+- left click shoots a sphere from the camera
+- 1 spawns a box, 2 spawns a sphere, 3 spawns a constrained chain
+- Space pauses, N advances one fixed step, R resets from the same seed
+- G toggles gravity, C clears dynamic bodies, Escape quits
+
+Also provide deterministic non-interactive modes:
+
+  ./physics --benchmark --seed SEED --bodies COUNT --steps STEPS
+  ./physics --render-snapshot SEED FILE.bmp
+
+Benchmark mode must run without SDL video, simulate exactly the requested number
+of fixed steps, and print one stable machine-readable summary containing:
+
+  seed
+  bodies
+  steps
+  broadphase_candidates
+  narrowphase_contacts
+  sleeping_bodies
+  kinetic_energy
+  state_hash
+
+Use a deterministic 64-bit hash over quantized final body state. Running the same
+command twice must produce the same hash. Include internal invariant checks that
+fail nonzero for NaN/infinite state, bodies tunneling far below the world, or
+unbounded energy growth.
+
+Render-snapshot mode must create a hidden 1280x720 OpenGL window, generate the
+same seeded scene, advance it for 20 fixed steps, render one frame, read pixels
+with glReadPixels, save a 24-bit BMP, print the filename, and exit. It must work
+under a software OpenGL implementation. Place the snapshot camera above and
+outside the scene looking directly toward the world origin; the rendered image
+must visibly contain the terrain/grid and many simulated bodies, not empty space.
+Preserve the image upright: OpenGL row zero is already the bottom row, and a
+positive-height BMP is also stored bottom-up, so do not vertically flip it twice.
+
+Check every SDL allocation and OpenGL setup error, cleanly destroy the context and
+window, free all allocations, and print concise usage for invalid arguments.

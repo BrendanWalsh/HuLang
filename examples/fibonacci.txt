@@ -1,0 +1,11 @@
+Calculate and display the first N Fibonacci numbers, where N is provided as
+a command-line argument. If no argument is given, default to 20. Print each
+number on its own line with its index, like:
+
+  F(0) = 0
+  F(1) = 1
+  F(2) = 1
+  ...
+
+Use unsigned 64-bit integers to support large values. If a number would
+overflow, stop and print a message saying so.

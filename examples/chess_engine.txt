@@ -1,0 +1,105 @@
+Build a complete chess engine as one self-contained native program with a real
+2D graphical interface. Use SDL2 through <SDL2/SDL.h>. Do not use an external
+chess library, opening-book file, network service, image asset, or font file.
+
+Represent a full chess position, including side to move, castling rights,
+en-passant target square, halfmove clock, and fullmove number. Parse and validate
+all six fields of a FEN string. Print a clear error and exit nonzero for malformed
+or impossible FEN input.
+
+Generate only legal moves. Support every normal and special rule:
+
+- pawn single and double pushes
+- captures and en passant
+- promotion to queen, rook, bishop, or knight
+- castling on both sides, including all attacked-square restrictions
+- check detection and pinned pieces
+- checkmate and stalemate
+- fifty-move and insufficient-material draws
+
+Use coordinate notation for moves, such as e2e4, e1g1, and e7e8q. Make and
+unmake moves without losing any position state.
+
+Provide these non-interactive commands:
+
+  ./chess --perft DEPTH
+  ./chess --perft DEPTH "FEN"
+  ./chess --analyze "FEN" --depth DEPTH
+
+Perft must recursively count legal leaf nodes without search pruning and print:
+
+  perft(DEPTH) = NODE_COUNT
+
+Analysis must be deterministic for a fixed position and depth. Print the depth,
+score in centipawns (or a mate score), nodes searched, best move, and principal
+variation.
+
+Implement an actual chess search:
+
+- iterative deepening
+- negamax alpha-beta pruning
+- quiescence search over tactical captures and promotions
+- deterministic move ordering with the transposition-table move first, then
+  promotions and captures, then quiet moves
+- a static evaluation using material and piece-square terms
+- checkmate scores that prefer faster mates
+- a fixed-size transposition table bounded to at most 64 MiB
+- deterministic Zobrist hashing generated from a fixed seed
+- transposition entries containing key, depth, score, bound type, and best move
+
+With no command, open a 960x720 SDL2 window and start a new game with the human
+playing white. Also accept:
+
+  ./chess --gui white
+  ./chess --gui black
+  ./chess --gui white "FEN"
+  ./chess --gui black "FEN"
+  ./chess --gui white "FEN" --depth DEPTH
+
+The window must contain an 8x8 board and a side panel. Draw everything with SDL2
+primitives and a small bitmap font embedded in the C source; do not load files at
+runtime. Render recognizable chess pieces as large lettered/vector tokens with
+strong contrasting colors.
+
+The graphical interface must:
+
+- orient the board from the human player's side
+- select and move pieces with two mouse clicks
+- highlight the selected square and every legal destination
+- distinguish captures from quiet legal moves
+- highlight the previous move and a king currently in check
+- show side to move, game result, engine depth, score, nodes, best move, and
+  principal variation in the side panel
+- reject illegal clicks without changing the position
+- show an on-board promotion chooser for queen, rook, bishop, or knight
+- support N for a new game, F to flip the board, and Escape to quit
+- stay responsive while the engine searches by running search on an SDL thread
+  against a copied position, then delivering the result safely to the UI thread
+- handle window close events and free the window, surfaces, mutexes, threads,
+  transposition table, and other allocations
+
+Use one shared board-rendering function for the live window and this deterministic
+headless command:
+
+  ./chess --render-position "FEN" FILE.bmp
+
+The render command must create a 960x720 32-bit SDL surface, draw the same board
+and side panel without opening an interactive window, save it with SDL_SaveBMP,
+print the output filename, and exit. It must work with SDL_VIDEODRIVER=dummy.
+
+Keep terminal play available as a separate mode:
+
+  ./chess --play white
+  ./chess --play black
+  ./chess --play white "FEN"
+  ./chess --play black "FEN"
+
+In terminal mode, draw an ASCII board with coordinates after every move. The
+human enters coordinate moves. Reject illegal moves without changing the
+position. On the engine turn, search to depth 5, print its chosen move and search
+statistics, and continue until checkmate, stalemate, a supported draw,
+resignation, or EOF. Accept "quit" and "resign" at the move prompt.
+
+Keep the implementation portable C11 plus POSIX APIs already available to a
+normal gcc build. Check allocations and malformed input, use bounded buffers,
+print concise usage text, and free any allocated memory.
